@@ -338,10 +338,15 @@
             <div class="contact-content">
                 <div class="contact-form">
                     <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">Demande de devis</h3>
-                    <form id="contactForm">
+                    <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                        <!-- Clé Web3Forms -->
+                        <input type="hidden" name="access_key" value="c5d5051c-3c6c-4cac-ac41-f47c365645cd">
+                        <input type="hidden" name="subject" value="Nouvelle demande de devis - ACM-SA">
+                        <input type="hidden" name="from_name" value="Site Web ACM-SA">
+                        
                         <div class="form-group">
                             <label for="nom">Nom *</label>
-                            <input type="text" id="nom" name="nom" required>
+                            <input type="text" id="nom" name="name" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email *</label>
@@ -349,12 +354,16 @@
                         </div>
                         <div class="form-group">
                             <label for="telephone">Téléphone</label>
-                            <input type="tel" id="telephone" name="telephone">
+                            <input type="tel" id="telephone" name="phone">
                         </div>
                         <div class="form-group">
                             <label for="projet">Description du projet *</label>
-                            <textarea id="projet" name="projet" rows="5" required placeholder="Décrivez votre projet en détail..."></textarea>
+                            <textarea id="projet" name="message" rows="5" required placeholder="Décrivez votre projet en détail..."></textarea>
                         </div>
+                        
+                        <!-- Protection anti-spam (invisible) -->
+                        <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                        
                         <button type="submit" class="submit-btn">Envoyer la demande</button>
                     </form>
                 </div>
