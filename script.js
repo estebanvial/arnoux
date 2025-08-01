@@ -460,16 +460,24 @@
 
         // ============ GESTION DU FORMULAIRE ============
         if (contactForm) {
+            console.log('📧 Formulaire configuré avec Web3Forms');
+            
             contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+                e.preventDefault(); // Empêcher l'envoi par défaut pour valider
                 
                 const formData = new FormData(contactForm);
-                const nom = formData.get('nom');
+                const nom = formData.get('name');
                 const email = formData.get('email');
-                const telephone = formData.get('telephone');
-                const projet = formData.get('projet');
+                const message = formData.get('message');
                 
-                if (!nom || !email || !projet) {
+                console.log('📝 Données du formulaire:', {
+                    nom: nom,
+                    email: email,
+                    message: message
+                });
+                
+                // Validation côté client
+                if (!nom || !email || !message) {
                     showNotification('Veuillez remplir tous les champs obligatoires.', 'error');
                     return;
                 }
@@ -479,13 +487,35 @@
                     return;
                 }
                 
+                // Si validation OK, envoyer le formulaire
                 showLoading(true);
+                console.log('🚀 Envoi vers Web3Forms...');
                 
-                setTimeout(function() {
+                // Envoyer les données à Web3Forms
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    console.log('📡 Réponse statut:', response.status);
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log('📨 Réponse Web3Forms:', data);
                     showLoading(false);
-                    showNotification('Merci pour votre demande ! Nous vous contacterons dans les plus brefs délais.', 'success');
-                    contactForm.reset();
-                }, 2000);
+                    if (data.success) {
+                        showNotification('✅ Email envoyé avec succès ! Vérifiez votre boîte email (et le dossier spam).', 'success');
+                        contactForm.reset();
+                    } else {
+                        console.error('❌ Erreur Web3Forms:', data);
+                        showNotification('❌ Erreur: ' + (data.message || 'Problème inconnu'), 'error');
+                    }
+                })
+                .catch(function(error) {
+                    showLoading(false);
+                    console.error('💥 Erreur réseau:', error);
+                    showNotification('❌ Erreur réseau. Vérifiez votre connexion internet.', 'error');
+                });
             });
         }
 
