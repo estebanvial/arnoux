@@ -49,6 +49,35 @@ body {
     font-weight: bold;
     text-decoration: none;
     color: white;
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive logo */
+@media (max-width: 768px) {
+    .logo-img {
+        height: 35px;
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-img {
+        height: 30px;
+        max-width: 120px;
+    }
 }
 
 .nav-menu {
